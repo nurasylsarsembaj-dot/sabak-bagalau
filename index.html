@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#168447">
+  <title>Бүгінгі сабақты бағалаңыз</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 22px;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #173b28;
+      background: linear-gradient(145deg, #e9f8ed, #d8efff);
+    }
+    .card {
+      width: 100%;
+      max-width: 440px;
+      padding: 30px 24px;
+      border-radius: 24px;
+      background: #fff;
+      box-shadow: 0 12px 36px rgba(20, 80, 45, .13);
+    }
+    .leaf { font-size: 38px; text-align: center; }
+    h1 {
+      margin: 10px 0 8px;
+      text-align: center;
+      color: #14743d;
+      font-size: clamp(25px, 6vw, 31px);
+    }
+    .intro {
+      margin: 0 0 26px;
+      text-align: center;
+      line-height: 1.5;
+      color: #587064;
+    }
+    label.name-label, .rating-title {
+      display: block;
+      margin: 0 0 9px;
+      font-weight: 700;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 14px 15px;
+      border: 1.5px solid #cbded1;
+      border-radius: 12px;
+      font-size: 16px;
+      outline: none;
+    }
+    input[type="text"]:focus {
+      border-color: #168447;
+      box-shadow: 0 0 0 3px rgba(22,132,71,.12);
+    }
+    fieldset { border: 0; padding: 0; margin: 23px 0 25px; }
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px;
+      margin-top: 10px;
+      border: 1.5px solid #d8e6dc;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .option:has(input:checked) {
+      border-color: #168447;
+      background: #effaf2;
+    }
+    .option input { width: 19px; height: 19px; accent-color: #168447; }
+    button {
+      width: 100%;
+      padding: 15px;
+      border: 0;
+      border-radius: 13px;
+      background: #168447;
+      color: white;
+      font-size: 17px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    button:hover { background: #106b38; }
+    .note {
+      margin: 15px 0 0;
+      text-align: center;
+      color: #718078;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div class="leaf" aria-hidden="true">🌿</div>
+    <h1>Бүгінгі сабақты бағалаңыз</h1>
+    <p class="intro">Өз пікіріңізді білдіріңіз. Сіздің жауабыңыз біз үшін маңызды!</p>
+
+    <form id="feedbackForm">
+      <label class="name-label" for="studentName">Атыңызды жазыңыз:</label>
+      <input
+        id="studentName"
+        name="studentName"
+        type="text"
+        placeholder="Аты-жөніңіз"
+        autocomplete="name"
+        maxlength="80"
+        required
+      >
+
+      <fieldset>
+        <legend class="rating-title">Бүгінгі сабақ сізге ұнады ма?</legend>
+
+        <label class="option">
+          <input type="radio" name="rating" value="Өте жақсы" required>
+          <span>😊 Өте жақсы</span>
+        </label>
+
+        <label class="option">
+          <input type="radio" name="rating" value="Орташа">
+          <span>😐 Орташа</span>
+        </label>
+
+        <label class="option">
+          <input type="radio" name="rating" value="Нашар">
+          <span>🙁 Нашар</span>
+        </label>
+      </fieldset>
+
+      <button type="submit">Жіберу</button>
+    </form>
+
+    <p class="note">«Жіберу» батырмасын басқаннан кейін WhatsApp ашылып, жауабыңыз дайын мәтін түрінде көрсетіледі.</p>
+  </main>
+
+  <script>
+    const WHATSAPP_NUMBER = "77768143633";
+
+    document.getElementById("feedbackForm").addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const name = document.getElementById("studentName").value.trim();
+      const selectedRating = document.querySelector('input[name="rating"]:checked');
+
+      if (!name || !selectedRating) {
+        alert("Атыңызды жазып, сабаққа баға беріңіз.");
+        return;
+      }
+
+      const message =
+        "Сабақтың бағасы\n" +
+        "Оқушының аты: " + name + "\n" +
+        "Бүгінгі сабақтың бағасы: " + selectedRating.value;
+
+      const whatsappUrl =
+        "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(message);
+
+      window.location.href = whatsappUrl;
+    });
+  </script>
+</body>
+</html>
